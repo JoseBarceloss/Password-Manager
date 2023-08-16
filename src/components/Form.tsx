@@ -1,20 +1,110 @@
-function Form() {
+import React, { FormEvent, useState } from 'react';
+
+export type ValueProps = {
+  nomeServico: string,
+  login: string,
+  senha: string,
+  url: string,
+};
+
+type FormProps = {
+  onRegister: (formValue: ValueProps,) => void;
+  onCancel: () => void;
+};
+
+function Form({ onCancel, onRegister }: FormProps) {
+  const [nomeServico, setNomeServico] = useState('');
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
+  const [url, setUrl] = useState('');
+
+  const isButtonDisabled = () => (
+    nomeServico === ''
+    || login === ''
+    || senha.length < 8
+    || senha.length > 16
+    || !/\d/.test(senha)
+    || !/[a-zA-Z]/.test(senha)
+    || !/[!@#$%^&*]/.test(senha)
+  );
+
+  const isPasswordValid = (validation: boolean) => (
+    validation ? 'valid-password-check' : 'invalid-password-check'
+  );
+
+  const onSubmitForm = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onRegister({
+      nomeServico,
+      login,
+      senha,
+      url,
+    });
+  };
+
   return (
-    <div className="form-container">
-      <label htmlFor="nome-servico">Nome do serviço:</label>
-      <input type="text" id="nome-servico" />
+    <div>
+      <form className="formulario" onSubmit={ onSubmitForm }>
+        <label className="label-form" htmlFor="nome-servico">Nome do serviço</label>
+        <input
+          className="input-form"
+          type="text"
+          id="nome-servico"
+          value={ nomeServico }
+          onChange={ (e) => setNomeServico(e.target.value) }
+        />
 
-      <label htmlFor="login">Login:</label>
-      <input type="text" id="login" />
+        <label className="label-form" htmlFor="login">Login</label>
+        <input
+          className="input-form"
+          type="text"
+          id="login"
+          value={ login }
+          onChange={ (e) => setLogin(e.target.value) }
+        />
 
-      <label htmlFor="senha">Senha:</label>
-      <input type="password" id="senha" />
+        <label className="label-form" htmlFor="senha">Senha</label>
+        <input
+          className="input-form"
+          type="password"
+          id="senha"
+          value={ senha }
+          onChange={ (e) => setSenha(e.target.value) }
+        />
 
-      <label htmlFor="url">URL:</label>
-      <input type="text" id="url" />
+        <label className="label-form" htmlFor="url">URL</label>
+        <input
+          className="input-form"
+          type="text"
+          id="url"
+          value={ url }
+          onChange={ (e) => setUrl(e.target.value) }
+        />
 
-      <button>Cadastrar</button>
-      <button>Cancelar</button>
+        <div className="requiset">
+          <p className={ isPasswordValid(senha.length >= 8) }>
+            Possuir 8 ou mais caracteres
+          </p>
+          <p className={ isPasswordValid(senha.length <= 16) }>
+            Possuir até 16 caracteres
+          </p>
+          <p className={ isPasswordValid(/\d/.test(senha) && /[a-zA-Z]/.test(senha)) }>
+            Possuir letras e números
+          </p>
+          <p className={ isPasswordValid(/[!@#$%^&*]/.test(senha)) }>
+            Possuir algum caractere especial
+          </p>
+        </div>
+
+        <button className="butao-2" onClick={ onCancel }>Cancelar</button>
+        <button
+          className="butao-2"
+          disabled={ isButtonDisabled() }
+          type="submit"
+        >
+          Cadastrar
+        </button>
+      </form>
     </div>
   );
 }
