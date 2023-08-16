@@ -58,9 +58,13 @@ function App() {
               ) : (
                 servicos.map((servico, index) => (
                   <div className="grid" key={ index }>
-                    <a className="servico" href={ servico.url }>{servico.nomeServico}</a>
-                    <p className="servico">{ servico.login }</p>
-                    <p className="servico">{ renderizarSenha(servico.senha) }</p>
+                    <a className="servico" href={ servico.url }>
+                      {servico.nomeServico}
+                    </a>
+                    <p className="servico">{servico.login}</p>
+                    <p className="servico">
+                      {esconderSenhas ? '******' : renderizarSenha(servico.senha)}
+                    </p>
                     <button
                       className="button-3"
                       onClick={ () => removerServico(index) }
