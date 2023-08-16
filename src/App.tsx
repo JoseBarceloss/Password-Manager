@@ -68,6 +68,13 @@ function App() {
                     >
                       Remover
                     </button>
+                    <input
+                      type="checkbox"
+                      id="esconderSenhasCheckbox"
+                      checked={ esconderSenhas }
+                      onChange={ toggleEsconderSenhas }
+                    />
+                    <label htmlFor="esconderSenhasCheckbox">Esconder senhas</label>
                   </div>
                 ))
               )}

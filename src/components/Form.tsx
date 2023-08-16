@@ -17,6 +17,11 @@ function Form({ onCancel, onRegister }: FormProps) {
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
   const [url, setUrl] = useState('');
+  const [senhaVisivel, setSenhaVisivel] = useState(false); // Novo estado
+
+  const toggleSenhaVisivel = () => {
+    setSenhaVisivel(!senhaVisivel);
+  };
 
   const isButtonDisabled = () => (
     nomeServico === ''
@@ -66,11 +71,21 @@ function Form({ onCancel, onRegister }: FormProps) {
         <label className="label-form" htmlFor="senha">Senha</label>
         <input
           className="input-form"
-          type="password"
+          type={ senhaVisivel ? 'text' : 'password' }
           id="senha"
           value={ senha }
           onChange={ (e) => setSenha(e.target.value) }
         />
+        <button
+          className="show-hide-button"
+          type="button"
+          data-testid="show-hide-form-password"
+          onClick={ toggleSenhaVisivel }
+        >
+          {senhaVisivel ? 'Esconder' : 'Mostrar'}
+          {' '}
+          senha
+        </button>
 
         <label className="label-form" htmlFor="url">URL</label>
         <input
